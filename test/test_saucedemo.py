@@ -17,8 +17,6 @@ def test_catalogo_productos( driver ):
     title = driver.find_element(By.CLASS_NAME, "title").text
     assert title == "Products"  
 
-
-    #validar productos
     productos = driver.find_elements(By.CSS_SELECTOR, "[data-test='inventory-item']")
 
     assert len(productos) > 0
@@ -29,21 +27,17 @@ def test_agregar_al_carrito( driver):
     login(driver , "standard_user", "secret_sauce")
     wait = WebDriverWait(driver , 10)
 
-
     nombre_producto = driver.find_element(By.CLASS_NAME, "inventory_item_name").text
 
-     #agregar producto
     bnt_add = wait.until(
         EC.element_to_be_clickable((By.XPATH,"//button[contains(text(),'Add to cart')]"))
     )
     bnt_add.click()
 
-    #validar contador
     badge = driver.find_element(By.CLASS_NAME, "shopping_cart_badge")
     assert badge.text == "1"
 
     driver.find_element(By.CLASS_NAME, "shopping_cart_link").click()
 
-    #validar productos en el carrito
     producto_carrito = driver.find_element(By.CLASS_NAME, "inventory_item_name").text
     assert producto_carrito == nombre_producto
